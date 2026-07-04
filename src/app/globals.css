@@ -1,26 +1,339 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fffdf7;
+  --foreground: #1a1a1a;
+  --surface: #ffffff;
+  --neo-yellow: #ffde59;
+  --neo-pink: #ff6b9d;
+  --neo-blue: #6ec6ff;
+  --neo-green: #7bed9f;
+  --neo-orange: #ffa726;
+  --neo-purple: #b388ff;
+  --neo-red: #ff5252;
+  --neo-border: #1a1a1a;
+  --neo-shadow: 3px 3px 0px 0px #1a1a1a;
+  --neo-shadow-md: 5px 5px 0px 0px #1a1a1a;
+  --neo-shadow-lg: 8px 8px 0px 0px #1a1a1a;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --neo-shadow: 4px 4px 0px 0px #1a1a1a;
+    --neo-shadow-md: 6px 6px 0px 0px #1a1a1a;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-neo-yellow: var(--neo-yellow);
+  --color-neo-pink: var(--neo-pink);
+  --color-neo-blue: var(--neo-blue);
+  --color-neo-green: var(--neo-green);
+  --color-neo-orange: var(--neo-orange);
+  --color-neo-purple: var(--neo-purple);
+  --color-neo-red: var(--neo-red);
+  --color-neo-border: var(--neo-border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Neobrutalism Card */
+.neo-card {
+  background: var(--surface);
+  border: 2px solid var(--neo-border);
+  border-radius: 12px;
+  box-shadow: var(--neo-shadow);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 640px) {
+  .neo-card {
+    border-width: 3px;
+    border-radius: 16px;
+  }
+}
+
+.neo-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--neo-shadow-md);
+}
+
+/* Disable hover transforms on touch devices */
+@media (hover: none) {
+  .neo-card:hover {
+    transform: none;
+    box-shadow: var(--neo-shadow);
+  }
+}
+
+/* Neobrutalism Button */
+.neo-btn {
+  border: 2px solid var(--neo-border);
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: var(--neo-shadow);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  display: inline-block;
+}
+
+@media (min-width: 640px) {
+  .neo-btn {
+    border-width: 3px;
+    border-radius: 12px;
+  }
+}
+
+.neo-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--neo-shadow-md);
+}
+
+.neo-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px #1a1a1a;
+}
+
+@media (hover: none) {
+  .neo-btn:hover {
+    transform: none;
+    box-shadow: var(--neo-shadow);
+  }
+}
+
+/* Tag pill neobrutalism */
+.neo-tag {
+  display: inline-block;
+  background: var(--background);
+  border: 2px solid var(--neo-border);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  box-shadow: 2px 2px 0px 0px #1a1a1a;
+}
+
+@media (min-width: 640px) {
+  .neo-tag {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+  }
+}
+
+.neo-tag:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px 0px #1a1a1a;
+  background: var(--neo-yellow);
+}
+
+/* Section heading badge */
+.neo-badge {
+  display: inline-block;
+  border: 2px solid var(--neo-border);
+  border-radius: 10px;
+  padding: 6px 16px;
+  font-weight: 900;
+  font-size: 1.25rem;
+  box-shadow: var(--neo-shadow);
+}
+
+@media (min-width: 640px) {
+  .neo-badge {
+    border-width: 3px;
+    border-radius: 12px;
+    padding: 8px 24px;
+    font-size: 1.5rem;
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neo-border);
+  border-radius: 3px;
+}
+
+/* Nav link style */
+.nav-link {
+  position: relative;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--neo-yellow);
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Profile image */
+.profile-img {
+  border: 3px solid var(--neo-border);
+  border-radius: 16px;
+  box-shadow: var(--neo-shadow);
+  object-fit: cover;
+}
+
+@media (min-width: 640px) {
+  .profile-img {
+    border-width: 4px;
+    border-radius: 20px;
+    box-shadow: var(--neo-shadow-md);
+  }
+}
+
+/* Wavy divider with animated gradient */
+.wavy-divider {
+  height: 4px;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--neo-yellow) 0px,
+    var(--neo-yellow) 16px,
+    var(--neo-pink) 16px,
+    var(--neo-pink) 32px,
+    var(--neo-blue) 32px,
+    var(--neo-blue) 48px,
+    var(--neo-green) 48px,
+    var(--neo-green) 64px,
+    var(--neo-purple) 64px,
+    var(--neo-purple) 80px
+  );
+  border-radius: 2px;
+  background-size: 200% 100%;
+  animation: shimmer-divider 8s linear infinite;
+}
+
+@media (min-width: 640px) {
+  .wavy-divider {
+    height: 6px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--neo-yellow) 0px,
+      var(--neo-yellow) 20px,
+      var(--neo-pink) 20px,
+      var(--neo-pink) 40px,
+      var(--neo-blue) 40px,
+      var(--neo-blue) 60px,
+      var(--neo-green) 60px,
+      var(--neo-green) 80px,
+      var(--neo-purple) 80px,
+      var(--neo-purple) 100px
+    );
+    background-size: 200% 100%;
+  }
+}
+
+@keyframes shimmer-divider {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Bounce in for nav on load */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease-out;
+}
+
+/* Tag hover wiggle */
+@keyframes tag-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  75% { transform: rotate(2deg); }
+}
+
+@media (hover: hover) {
+  .neo-tag:hover {
+    animation: tag-wiggle 0.3s ease-in-out;
+  }
+}
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(280px, 80vw);
+  background: var(--background);
+  border-left: 3px solid var(--neo-border);
+  z-index: 70;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-menu.active {
+  transform: translateX(0);
+}
+
+/* Ensure text doesn't overflow on small screens */
+.break-words-mobile {
+  word-break: break-word;
+  overflow-wrap: break-word;
 }

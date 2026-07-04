@@ -1,0 +1,138 @@
+{
+  "nav": {
+    "about": "Tentang",
+    "experience": "Pengalaman",
+    "education": "Pendidikan",
+    "skills": "Keahlian",
+    "contact": "Hubungi Saya"
+  },
+  "hero": {
+    "badge": "Terbuka untuk peluang kerja",
+    "title": "Eka Maylinda Nely",
+    "subtitle": "S.P. — Lulusan Pertanian",
+    "description": "Lulusan Pertanian dengan kemampuan analitis, komunikasi, dan keterlibatan pemangku kepentingan yang kuat. Tertarik pada keberlanjutan, pembangunan sosial, dan keterlibatan komunitas.",
+    "cta1": "Hubungi saya →",
+    "cta2": "Pengalaman saya ↓",
+    "location": "📍 Mojokerto, Indonesia",
+    "university": "🎓 Universitas Brawijaya"
+  },
+  "about": {
+    "title": "Tentang Saya",
+    "p1": "Lulusan Pertanian dari Universitas Brawijaya dengan kemampuan analitis, komunikasi, dan keterlibatan pemangku kepentingan yang kuat. Berpengalaman dalam riset, analisis data, koordinasi proyek, dan kegiatan berbasis komunitas.",
+    "p2": "Teliti dan adaptif, dengan minat kuat pada keberlanjutan, pembangunan sosial, dan keterlibatan komunitas. Saya senang mengkoordinasikan acara, bekerja dalam tim, dan mengubah data menjadi wawasan yang dapat ditindaklanjuti.",
+    "p3": "Saya berkembang di lingkungan kolaboratif dan selalu berusaha berkontribusi positif — baik dalam riset, operasional, maupun layanan komunitas.",
+    "stat1Label": "Pengalaman kerja",
+    "stat2Label": "Peserta acara terkelola",
+    "stat3Label": "Riset terpublikasi"
+  },
+  "experience": {
+    "title": "Pengalaman",
+    "workLabel": "Kerja",
+    "internLabel": "Magang",
+    "orgLabel": "Organisasi & Kepemimpinan",
+    "jobs": [
+      {
+        "title": "Staff Toko",
+        "company": "Podjok Gerabah",
+        "period": "Mar 2026 — Sekarang",
+        "description": [
+          "Membantu pelanggan dengan menyediakan informasi produk dan menjawab pertanyaan",
+          "Mengelola operasional toko harian, termasuk organisasi inventaris dan display produk",
+          "Menjaga catatan transaksi penjualan dan ketersediaan stok secara akurat",
+          "Menangani keluhan pelanggan dan berkontribusi pada pengalaman pelanggan yang positif"
+        ],
+        "highlights": ["Layanan Pelanggan", "Inventaris", "Penjualan"]
+      },
+      {
+        "title": "Enumerator",
+        "company": "Lembaga Survei Indonesia DAPIL V",
+        "period": "Sep — Nov 2023",
+        "description": [
+          "Melaksanakan survei lapangan dan wawancara responden sesuai prosedur yang ditetapkan",
+          "Mengumpulkan, memverifikasi, dan mencatat data dengan akurasi tinggi",
+          "Beradaptasi dengan beragam kondisi lapangan dan batasan waktu"
+        ],
+        "highlights": ["Pengumpulan Data", "Survei", "Kerja Lapangan"]
+      }
+    ],
+    "internship": {
+      "title": "Magang — Divisi Lanskap & Pembibitan",
+      "company": "Dinas Lingkungan Hidup Kota Malang",
+      "period": "Jul — Sep 2024",
+      "description": [
+        "Membantu pengelolaan pembibitan tanaman untuk taman kota",
+        "Melakukan monitoring dan pemeliharaan ruang terbuka hijau",
+        "Berpartisipasi dalam penanaman dan perawatan pohon",
+        "Melakukan survei kesehatan pohon dan inventaris bibit, berkontribusi pada manajemen data"
+      ],
+      "highlights": ["Manajemen Pembibitan", "Ruang Hijau", "Manajemen Data"]
+    },
+    "organizational": [
+      {
+        "title": "Divisi Acara",
+        "company": "PRIMORDIA",
+        "period": "Jul 2024 — Jan 2025",
+        "description": [
+          "Mengembangkan konsep acara dan jadwal kegiatan berkoordinasi dengan tim lintas fungsi",
+          "Mengelola perencanaan operasional dan logistik untuk lebih dari 400 peserta dan panitia",
+          "Berkolaborasi dengan berbagai pemangku kepentingan untuk memastikan implementasi acara yang lancar"
+        ],
+        "highlights": ["Perencanaan Acara", "Logistik", "Koordinasi"]
+      },
+      {
+        "title": "Divisi Konsumsi",
+        "company": "MTQMN XVII & GBQN IX",
+        "period": "2022 — 2023",
+        "description": [
+          "Mengkoordinasikan logistik distribusi makanan untuk sekitar 1.000 peserta acara",
+          "Bekerja sama dengan tim lapangan untuk memastikan distribusi tepat waktu di berbagai venue",
+          "Membantu perencanaan, pemantauan, dan penyelesaian masalah logistik"
+        ],
+        "highlights": ["Logistik", "Koordinasi Tim", "Operasional"]
+      }
+    ]
+  },
+  "education": {
+    "title": "Pendidikan",
+    "degree": "Sarjana Pertanian (S.P.)",
+    "school": "Universitas Brawijaya",
+    "period": "Ags 2021 — Jul 2025",
+    "publicationTitle": "Publikasi / Proyek Penelitian",
+    "publicationPeriod": "Jan — Jul 2025",
+    "publicationText": "Rohmah, Eka M. N. N. R., and Baskara, Medha. 2025. Response of Oleander (Nerium oleander L.) Cuttings to Variations in Stem Position and Rootone-F Soaking Duration. J Plantropica."
+  },
+  "skills": {
+    "title": "Keahlian",
+    "categories": [
+      {
+        "category": "Soft Skills",
+        "skills": ["Komunikasi", "Keterlibatan Pemangku Kepentingan", "Membangun Relasi", "Pemecahan Masalah", "Perhatian terhadap Detail", "Berpikir Analitis", "Kolaborasi Tim", "Adaptabilitas", "Koordinasi Proyek"]
+      },
+      {
+        "category": "Hard Skills",
+        "skills": ["Canva", "CapCut", "Google Workspace", "Riset Konten", "Pembuatan Konten Dasar", "Microsoft Excel", "Microsoft Word", "Microsoft PowerPoint"]
+      },
+      {
+        "category": "Riset & Analisis",
+        "skills": ["Pengumpulan Data", "Survei Lapangan", "Analisis Data", "Penulisan Laporan", "Metodologi Penelitian"]
+      },
+      {
+        "category": "Operasional & Koordinasi",
+        "skills": ["Perencanaan Acara", "Manajemen Logistik", "Manajemen Inventaris", "Layanan Pelanggan", "Keterlibatan Komunitas"]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Hubungi Saya",
+    "description": "Saya selalu terbuka untuk peluang baru di bidang keberlanjutan, keterlibatan komunitas, dan koordinasi proyek. Jangan ragu untuk menghubungi! 🌱",
+    "cta": "Mari berkolaborasi dan membuat dampak! 🌿",
+    "ctaButton": "Kirim email →",
+    "email": "ekamaylindanely11@gmail.com",
+    "phone": "0822-2877-7987",
+    "linkedin": "Eka Maylinda Nely",
+    "location": "Mojokerto, Indonesia"
+  },
+  "footer": {
+    "rights": "Semua hak dilindungi."
+  }
+}
