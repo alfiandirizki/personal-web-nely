@@ -1,12 +1,7 @@
 import { getDictionary, locales, defaultLocale } from "@/i18n/dictionaries";
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Experience from "@/components/Experience";
-import Education from "@/components/Education";
-import Skills from "@/components/Skills";
-import Contact from "@/components/Contact";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import MobileNav from "@/components/MobileNav";
+import LandingContent from "@/components/LandingContent";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -66,17 +61,7 @@ export default async function Home({
       </nav>
 
       <main>
-        <Hero dict={dict.hero} />
-        <div className="wavy-divider max-w-6xl mx-auto" />
-        <About dict={dict.about} />
-        <div className="wavy-divider max-w-6xl mx-auto" />
-        <Experience dict={dict.experience} />
-        <div className="wavy-divider max-w-6xl mx-auto" />
-        <Education dict={dict.education} />
-        <div className="wavy-divider max-w-6xl mx-auto" />
-        <Skills dict={dict.skills} />
-        <div className="wavy-divider max-w-6xl mx-auto" />
-        <Contact dict={dict.contact} />
+        <LandingContent locale={lang} dict={dict} />
       </main>
 
       {/* Footer */}
