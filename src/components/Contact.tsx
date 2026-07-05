@@ -2,8 +2,9 @@
 
 import type { Dictionary } from "@/i18n/types";
 import { FadeInUp, StaggerContainer, StaggerItem, ScaleIn } from "./animations";
+import ContactForm from "./ContactForm";
 
-export default function Contact({ dict }: { dict: Dictionary["contact"] }) {
+export default function Contact({ dict, locale }: { dict: Dictionary["contact"]; locale?: string }) {
   const contactLinks = [
     {
       label: "Email",
@@ -13,9 +14,9 @@ export default function Contact({ dict }: { dict: Dictionary["contact"] }) {
       color: "bg-neo-yellow",
     },
     {
-      label: "Phone",
+      label: "WhatsApp",
       value: dict.phone,
-      href: `tel:+6282228777987`,
+      href: `https://wa.me/6282228777987`,
       icon: "📱",
       color: "bg-neo-green",
     },
@@ -76,9 +77,18 @@ export default function Contact({ dict }: { dict: Dictionary["contact"] }) {
               ))}
             </StaggerContainer>
 
+            {/* Contact Form */}
+            <ScaleIn delay={0.25}>
+              <div className="mt-8 sm:mt-10 neo-card p-5 sm:p-6">
+                <h3 className="font-black text-base sm:text-lg mb-1">💬 {locale === "id" ? "Kirim Pesan" : "Send a Message"}</h3>
+                <p className="text-xs text-neo-border/60 mb-2">{locale === "id" ? "Langsung dari website ini" : "Directly from this website"}</p>
+                <ContactForm locale={locale || "id"} />
+              </div>
+            </ScaleIn>
+
             {/* Fun CTA */}
             <ScaleIn delay={0.3}>
-              <div className="mt-8 sm:mt-10 neo-card bg-neo-green p-5 sm:p-6 text-center">
+              <div className="mt-6 neo-card bg-neo-green p-5 sm:p-6 text-center">
                 <p className="text-lg sm:text-xl font-black">{dict.cta}</p>
                 <a
                   href={`mailto:${dict.email}`}

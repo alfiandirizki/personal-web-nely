@@ -10,16 +10,19 @@ export default function OverviewTab() {
     categories: 0,
     skills: 0,
   });
+  const [views, setViews] = useState({ total: 0, today: 0, week: 0 });
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
   useEffect(() => {
-    async function fetchCounts() {
-      const [exp, edu, cat, skill] = await Promise.all([
+    async function fetchData() {
+      const [exp, edu, cat, skill, msgs] = await Promise.all([
         supabase.from("experiences").select("id", { count: "exact", head: true }),
         supabase.from("education").select("id", { count: "exact", head: true }),
         supabase.from("skill_categories").select("id", { count: "exact", head: true }),
         supabase.from("skills").select("id", { count: "exact", head: true }),
+        supabase.from("messages").select("id", { count: "exact", head: true }).eq("read", false),
       ]);
       setCounts({
         experiences: exp.count || 0,
@@ -27,9 +30,27 @@ export default function OverviewTab() {
         categories: cat.count || 0,
         skills: skill.count || 0,
       });
+      setUnreadMessages(msgs.count || 0);
+
+      // Page views
+      const now = new Date();
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+      const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+      const [totalViews, todayViews, weekViews] = await Promise.all([
+        supabase.from("page_views").select("id", { count: "exact", head: true }),
+        supabase.from("page_views").select("id", { count: "exact", head: true }).gte("created_at", todayStart),
+        supabase.from("page_views").select("id", { count: "exact", head: true }).gte("created_at", weekStart),
+      ]);
+      setViews({
+        total: totalViews.count || 0,
+        today: todayViews.count || 0,
+        week: weekViews.count || 0,
+      });
+
       setLoading(false);
     }
-    fetchCounts();
+    fetchData();
   }, []);
 
   return (
@@ -44,26 +65,33 @@ export default function OverviewTab() {
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4">
-        <StatCard
-          value={loading ? "—" : String(counts.experiences)}
-          label="Pengalaman"
-          color="bg-neo-yellow"
-        />
-        <StatCard
-          value={loading ? "—" : String(counts.education)}
-          label="Pendidikan"
-          color="bg-neo-green"
-        />
-        <StatCard
-          value={loading ? "—" : String(counts.categories)}
-          label="Kategori Skill"
-          color="bg-neo-blue"
-        />
-        <StatCard
-          value={loading ? "—" : String(counts.skills)}
-          label="Total Skills"
-          color="bg-neo-pink"
-        />
+        <StatCard value={loading ? "—" : String(views.today)} label="Views Hari Ini" color="bg-neo-green" />
+        <StatCard value={loading ? "—" : String(views.week)} label="Views Minggu Ini" color="bg-neo-blue" />
+        <StatCard value={loading ? "—" : String(views.total)} label="Total Views" color="bg-neo-yellow" />
+        <StatCard value={loading ? "—" : String(unreadMessages)} label="Pesan Belum Dibaca" color="bg-neo-pink" />
+      </div>
+
+      {/* Content stats */}
+      <div className="neo-card p-5 sm:p-6">
+        <h3 className="font-black text-base mb-4">📝 Konten</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="text-center">
+            <p className="text-2xl font-black">{loading ? "—" : counts.experiences}</p>
+            <p className="text-xs text-neo-border/60 font-bold">Experience</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-black">{loading ? "—" : counts.education}</p>
+            <p className="text-xs text-neo-border/60 font-bold">Education</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-black">{loading ? "—" : counts.categories}</p>
+            <p className="text-xs text-neo-border/60 font-bold">Kategori</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-black">{loading ? "—" : counts.skills}</p>
+            <p className="text-xs text-neo-border/60 font-bold">Skills</p>
+          </div>
+        </div>
       </div>
 
       {/* Quick links */}

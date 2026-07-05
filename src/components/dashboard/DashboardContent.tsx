@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
@@ -9,11 +9,13 @@ import ExperienceTab from "./tabs/ExperienceTab";
 import EducationTab from "./tabs/EducationTab";
 import SkillsTab from "./tabs/SkillsTab";
 import OverviewTab from "./tabs/OverviewTab";
+import MessagesTab from "./tabs/MessagesTab";
 
-type Tab = "overview" | "profile" | "experience" | "education" | "skills";
+type Tab = "overview" | "profile" | "experience" | "education" | "skills" | "messages";
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
   { id: "overview", label: "Overview", icon: "📊" },
+  { id: "messages", label: "Messages", icon: "📨" },
   { id: "profile", label: "Profile", icon: "👤" },
   { id: "experience", label: "Experience", icon: "💼" },
   { id: "education", label: "Education", icon: "🎓" },
@@ -25,6 +27,31 @@ export default function DashboardContent({ user }: { user: User }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+
+  // Session timeout - auto logout after 30 min inactivity
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    const TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+
+    function resetTimer() {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        supabase.auth.signOut().then(() => {
+          router.push("/id/login");
+          router.refresh();
+        });
+      }, TIMEOUT_MS);
+    }
+
+    const events = ["mousedown", "keydown", "scroll", "touchstart"];
+    events.forEach((e) => window.addEventListener(e, resetTimer));
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeout);
+      events.forEach((e) => window.removeEventListener(e, resetTimer));
+    };
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -164,6 +191,7 @@ export default function DashboardContent({ user }: { user: User }) {
         {/* Page content */}
         <main className="p-4 sm:p-6 lg:p-8 max-w-5xl">
           {activeTab === "overview" && <OverviewTab />}
+          {activeTab === "messages" && <MessagesTab />}
           {activeTab === "profile" && <ProfileTab />}
           {activeTab === "experience" && <ExperienceTab />}
           {activeTab === "education" && <EducationTab />}

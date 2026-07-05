@@ -234,7 +234,7 @@ export default function LandingContent({
 
   return (
     <>
-      <Hero dict={heroDict} />
+      <Hero dict={heroDict} photoUrl={data?.profile?.photo_url} cvUrl={data?.profile?.cv_url} />
       <div className="wavy-divider max-w-6xl mx-auto" />
       <About dict={aboutDict} />
       <div className="wavy-divider max-w-6xl mx-auto" />
@@ -244,7 +244,7 @@ export default function LandingContent({
       <div className="wavy-divider max-w-6xl mx-auto" />
       <Skills dict={skillsDict} />
       <div className="wavy-divider max-w-6xl mx-auto" />
-      <Contact dict={contactDict} />
+      <Contact dict={contactDict} locale={locale} />
     </>
   );
 }

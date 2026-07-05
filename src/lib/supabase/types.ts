@@ -9,6 +9,8 @@ export interface Profile {
   location: string;
   linkedin_url: string;
   university: string;
+  photo_url: string;
+  cv_url: string;
   updated_at: string;
 }
 

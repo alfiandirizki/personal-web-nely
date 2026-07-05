@@ -4,24 +4,32 @@ import Image from "next/image";
 import type { Dictionary } from "@/i18n/types";
 import { FadeInLeft, FadeInRight, Float, FadeInUp } from "./animations";
 
-export default function Hero({ dict }: { dict: Dictionary["hero"] }) {
+export default function Hero({
+  dict,
+  photoUrl,
+  cvUrl,
+}: {
+  dict: Dictionary["hero"];
+  photoUrl?: string;
+  cvUrl?: string;
+}) {
   return (
     <section className="py-10 sm:py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col md:flex-row items-center gap-8 sm:gap-10 md:gap-16">
-          {/* Profile Photo with stickers */}
+          {/* Profile Photo */}
           <FadeInLeft delay={0.2} className="shrink-0">
             <Float duration={4} y={6}>
               <div className="relative w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64">
                 <Image
-                  src="/profile.jpg"
+                  src={photoUrl || "/profile.jpg"}
                   alt="Eka Maylinda Nely Nur Rohmah"
                   fill
                   sizes="(max-width: 640px) 160px, (max-width: 768px) 208px, 256px"
                   className="profile-img object-cover"
                   priority
                 />
-                {/* Stickers — inside Float so they move with the photo */}
+                {/* Stickers */}
                 <span className="absolute -top-3 -right-4 sm:-top-4 sm:-right-5 neo-btn bg-neo-yellow px-2 py-0.5 sm:px-3 sm:py-1 text-xs sm:text-sm rotate-[8deg] z-10">
                   🌱 Fresh Grad
                 </span>
@@ -34,7 +42,6 @@ export default function Hero({ dict }: { dict: Dictionary["hero"] }) {
 
           {/* Text Content */}
           <div className="text-center md:text-left w-full">
-            {/* Status pill */}
             <FadeInRight delay={0.1}>
               <div className="inline-flex items-center gap-2 neo-btn bg-neo-green px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm mb-4 sm:mb-6">
                 <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-green-600 animate-pulse" />
@@ -69,12 +76,23 @@ export default function Hero({ dict }: { dict: Dictionary["hero"] }) {
                 >
                   {dict.cta1}
                 </a>
-                <a
-                  href="#experience"
-                  className="neo-btn bg-neo-blue px-5 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base text-center"
-                >
-                  {dict.cta2}
-                </a>
+                {cvUrl ? (
+                  <a
+                    href={cvUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="neo-btn bg-neo-orange px-5 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base text-center"
+                  >
+                    📄 Download CV
+                  </a>
+                ) : (
+                  <a
+                    href="#experience"
+                    className="neo-btn bg-neo-blue px-5 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base text-center"
+                  >
+                    {dict.cta2}
+                  </a>
+                )}
               </div>
             </FadeInUp>
 

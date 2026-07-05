@@ -2,6 +2,9 @@ import { getDictionary, locales, defaultLocale } from "@/i18n/dictionaries";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import MobileNav from "@/components/MobileNav";
 import LandingContent from "@/components/LandingContent";
+import ScrollProgress from "@/components/ScrollProgress";
+import BackToTop from "@/components/BackToTop";
+import PageTracker from "@/components/PageTracker";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -19,9 +22,12 @@ export default async function Home({
   const dict = await getDictionary(lang);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background">
+      <div className="bg-pattern" aria-hidden="true" />
+      <ScrollProgress />
+
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-background border-b-2 sm:border-b-3 border-neo-border animate-slide-down">
+      <nav className="sticky-nav">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <a
@@ -80,6 +86,9 @@ export default async function Home({
           </div>
         </div>
       </footer>
+
+      <BackToTop />
+      <PageTracker />
     </div>
   );
 }

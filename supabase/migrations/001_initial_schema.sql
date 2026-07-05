@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS profile (
   location TEXT NOT NULL DEFAULT '',
   linkedin_url TEXT NOT NULL DEFAULT '',
   university TEXT NOT NULL DEFAULT '',
+  photo_url TEXT NOT NULL DEFAULT '',
+  cv_url TEXT NOT NULL DEFAULT '',
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -84,6 +86,13 @@ ALTER TABLE skills ENABLE ROW LEVEL SECURITY;
 ALTER TABLE publications ENABLE ROW LEVEL SECURITY;
 
 -- Public read access for all tables (website is public)
+DROP POLICY IF EXISTS "Public read access" ON profile;
+DROP POLICY IF EXISTS "Public read access" ON experiences;
+DROP POLICY IF EXISTS "Public read access" ON education;
+DROP POLICY IF EXISTS "Public read access" ON skill_categories;
+DROP POLICY IF EXISTS "Public read access" ON skills;
+DROP POLICY IF EXISTS "Public read access" ON publications;
+
 CREATE POLICY "Public read access" ON profile FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON experiences FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON education FOR SELECT USING (true);
@@ -92,6 +101,28 @@ CREATE POLICY "Public read access" ON skills FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON publications FOR SELECT USING (true);
 
 -- Authenticated users can do everything (admin)
+DROP POLICY IF EXISTS "Auth full access" ON profile;
+DROP POLICY IF EXISTS "Auth full access" ON experiences;
+DROP POLICY IF EXISTS "Auth full access" ON education;
+DROP POLICY IF EXISTS "Auth full access" ON skill_categories;
+DROP POLICY IF EXISTS "Auth full access" ON skills;
+DROP POLICY IF EXISTS "Auth full access" ON publications;
+
+CREATE POLICY "Auth full access" ON profile FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Auth full access" ON experiences FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Auth full access" ON education FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Auth full access" ON skill_categories FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Auth full access" ON skills FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Auth full access" ON publications FOR ALL USING (auth.role() = 'authenticated');
+
+-- Authenticated users can do everything (admin)
+DROP POLICY IF EXISTS "Auth full access" ON profile;
+DROP POLICY IF EXISTS "Auth full access" ON experiences;
+DROP POLICY IF EXISTS "Auth full access" ON education;
+DROP POLICY IF EXISTS "Auth full access" ON skill_categories;
+DROP POLICY IF EXISTS "Auth full access" ON skills;
+DROP POLICY IF EXISTS "Auth full access" ON publications;
+
 CREATE POLICY "Auth full access" ON profile FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Auth full access" ON experiences FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Auth full access" ON education FOR ALL USING (auth.role() = 'authenticated');
@@ -206,3 +237,63 @@ CROSS JOIN (VALUES
   ('Operations & Coordination', 'Community Engagement', 'Keterlibatan Komunitas', 5)
 ) AS s(cat, name_en, name_id, sort_order)
 WHERE sc.category_en = s.cat;
+
+
+-- Storage bucket for uploads (profile photo + CV)
+INSERT INTO storage.buckets (id, name, public) VALUES ('uploads', 'uploads', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Public read access for uploads bucket
+DROP POLICY IF EXISTS "Public read uploads" ON storage.objects;
+DROP POLICY IF EXISTS "Auth upload" ON storage.objects;
+DROP POLICY IF EXISTS "Auth update uploads" ON storage.objects;
+DROP POLICY IF EXISTS "Auth delete uploads" ON storage.objects;
+
+CREATE POLICY "Public read uploads" ON storage.objects FOR SELECT USING (bucket_id = 'uploads');
+CREATE POLICY "Auth upload" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'uploads' AND auth.role() = 'authenticated');
+CREATE POLICY "Auth update uploads" ON storage.objects FOR UPDATE USING (bucket_id = 'uploads' AND auth.role() = 'authenticated');
+CREATE POLICY "Auth delete uploads" ON storage.objects FOR DELETE USING (bucket_id = 'uploads' AND auth.role() = 'authenticated');
+
+
+-- Contact messages table
+CREATE TABLE IF NOT EXISTS messages (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  message TEXT NOT NULL DEFAULT '',
+  read BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can insert a message (contact form)
+DROP POLICY IF EXISTS "Public insert messages" ON messages;
+CREATE POLICY "Public insert messages" ON messages FOR INSERT WITH CHECK (true);
+
+-- Only authenticated can read/update/delete
+DROP POLICY IF EXISTS "Auth full access messages" ON messages;
+CREATE POLICY "Auth full access messages" ON messages FOR ALL USING (auth.role() = 'authenticated');
+
+
+-- Page views analytics
+CREATE TABLE IF NOT EXISTS page_views (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  path TEXT NOT NULL DEFAULT '/',
+  referrer TEXT DEFAULT '',
+  user_agent TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE page_views ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can insert (track view)
+DROP POLICY IF EXISTS "Public insert views" ON page_views;
+CREATE POLICY "Public insert views" ON page_views FOR INSERT WITH CHECK (true);
+
+-- Only authenticated can read
+DROP POLICY IF EXISTS "Auth read views" ON page_views;
+CREATE POLICY "Auth read views" ON page_views FOR SELECT USING (auth.role() = 'authenticated');
+
+DROP POLICY IF EXISTS "Auth delete views" ON page_views;
+CREATE POLICY "Auth delete views" ON page_views FOR DELETE USING (auth.role() = 'authenticated');

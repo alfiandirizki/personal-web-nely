@@ -4,26 +4,48 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_DURATION = 60_000; // 1 minute
+
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [lockedUntil, setLockedUntil] = useState<number | null>(null);
   const router = useRouter();
+
+  const isLocked = lockedUntil && Date.now() < lockedUntil;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isLocked) {
+      const remaining = Math.ceil(((lockedUntil || 0) - Date.now()) / 1000);
+      setError(`Terlalu banyak percobaan. Coba lagi dalam ${remaining} detik.`);
+      return;
+    }
+
     setLoading(true);
     setError("");
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      setError(error.message);
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
+      if (newAttempts >= MAX_ATTEMPTS) {
+        setLockedUntil(Date.now() + LOCKOUT_DURATION);
+        setError(`Akun terkunci selama 60 detik karena ${MAX_ATTEMPTS}x gagal login.`);
+        setTimeout(() => {
+          setLockedUntil(null);
+          setAttempts(0);
+        }, LOCKOUT_DURATION);
+      } else {
+        setError(`${error.message} (${MAX_ATTEMPTS - newAttempts} percobaan tersisa)`);
+      }
       setLoading(false);
     } else {
       router.push("/id/dashboard");
@@ -81,10 +103,10 @@ export default function LoginForm() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !!isLocked}
               className="neo-btn bg-neo-green w-full py-3 text-base text-center disabled:opacity-50"
             >
-              {loading ? "Loading..." : "Masuk →"}
+              {isLocked ? "🔒 Terkunci" : loading ? "Loading..." : "Masuk →"}
             </button>
           </form>
         </div>
